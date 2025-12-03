@@ -1,13 +1,23 @@
+--! API !--
+
 local nodes = require("node.node_api")
+
+local color = require("math.color")
 local vector2 = require("math.vector2")
+
+local asset_loader = require("files.asset_loader")
+--! API !--
+
 local scene_manager = require("scene_manager.manager")
+
+
 local Engine = {}
 Engine.__index = Engine
 
 function Engine.new(main_scene)
     local self = setmetatable({}, Engine)
 
-    self.apis = {nodes, vector2}
+    self.apis = {nodes, vector2,color, asset_loader}
     self.scene_manager = scene_manager:new({main_scene})
 
     self:setup_apis()

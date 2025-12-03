@@ -31,3 +31,8 @@ end
 function Assets.clear()
     Assets._loaded = {}
 end
+
+return {
+    get_asset = Assets.get,
+    clear_assets = Assets.clear
+}

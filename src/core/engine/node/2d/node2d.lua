@@ -7,6 +7,8 @@ function Node2D:init(name, is_root_node, parent, children, position, rotation, s
     self.position = position or Vector2:new(0, 0)
     self.rotation = rotation or 0
     self.scale = scale or Vector2:new(1, 1)
+
+    self:updateGlobalTransform()
 end
 
 function Node2D:set_position(position)
@@ -14,6 +16,7 @@ function Node2D:set_position(position)
         error("Position must be a Vector2.")
     end
     self.position = position
+    self:updateGlobalTransform()
 end
 
 function Node2D:set_rotation(rotation)
@@ -21,6 +24,7 @@ function Node2D:set_rotation(rotation)
         error("Rotation must be a number.")
     end
     self.rotation = rotation
+    self:updateGlobalTransform()
 end
 
 function Node2D:set_scale(scale)
@@ -28,11 +32,28 @@ function Node2D:set_scale(scale)
         error("Scale must be a Vector2.")
     end
     self.scale = scale
+    self:updateGlobalTransform()
 end
 
 function Node2D:get_position() return self.position end
 function Node2D:get_rotation() return self.rotation end
 function Node2D:get_scale() return self.scale end
+
+function Node2D:updateGlobalTransform()
+    if self.parent then
+        self.global_position = self.parent.global_position + self.position 
+        self.global_rotation = self.parent.global_rotation + self.rotation
+        self.global_scale = self.parent.global_scale * self.scale
+    else
+        self.global_position = self.position
+        self.global_rotation = self.rotation
+        self.global_scale = self.scale
+    end
+
+    for _, child in ipairs(self.children) do
+        child:updateGlobalTransform()
+    end
+end
 
 function Node2D:update_all(dt)
     for i=1,#self.children do

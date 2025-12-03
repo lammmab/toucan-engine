@@ -41,7 +41,7 @@ local function decode(scene,tbl)
 
     for k, v in pairs(tbl) do
         if node[k] == nil then
-            print("Key " .. k .. " not found in node: " .. expected_type .. ", skipping")
+            print("Key " .. k .. " not found in node class: " .. expected_type .. ", skipping")
             goto continue
         end
 
@@ -73,9 +73,7 @@ function NodeConverter.encode_node(node)
 
     for k, v in pairs(node) do
         if type(v) == "function"
-        or k == "children"
-        or k == "is_node"
-        or k == "_signals" then
+        or k:sub(1,1) == "_" then -- only save external vars (internal should be loaded automatically)
             goto continue
         end
 

@@ -1,5 +1,6 @@
 local Shape2D = class("Shape2D", require("node.2d.node2d"))
 local Vector2 = require("math.vector2")
+local Color = require("math.color")
 
 local shapes = {
     ["rectangle"] = 1,
@@ -18,20 +19,36 @@ function Shape2D:init(name, is_root_node, parent, children, position, rotation, 
     if size and typeof(size) ~= "vector2" then
         error("Size must be a Vector2.")
     end
+
+    if color and typeof(color) ~= "color" then
+        error("Color must be a color object.")
+    end
+
     self.shape = shape or "circle"
     self.size = size or Vector2:new(32,32)
-    self.color = color or {1,0,0}
+    self.color = color or Color:new(255,255,255,1)
 end
 
 function Shape2D:draw()
-    love.graphics.setColor(self.color)
+    love.graphics.setColor(self.color:to_love())
     if self.shape == "rectangle" then
-        love.graphics.rectangle("fill", self.position.x, self.position.y, self.size.x, self.size.y)
+        love.graphics.rectangle(
+            "fill", 
+            self.global_position.x, 
+            self.global_position.y, 
+            self.size.x, 
+            self.size.y
+        )
     elseif self.shape == "circle" then
         local radius = self.size.x
-        love.graphics.circle("fill", self.position.x, self.position.y, radius)
+        love.graphics.circle(
+            "fill", 
+            self.global_position.x, 
+            self.global_position.y, 
+            radius
+        )
     end
-    love.graphics.setColor(1,1,1)
+    love.graphics.setColor({1,1,1})
 end
 
 return Shape2D

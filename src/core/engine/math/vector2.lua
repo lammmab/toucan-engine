@@ -9,8 +9,12 @@ function Vector2:copy()
     return Vector2:new(self.x, self.y)
 end
 
-function Vector2.__add(a,b)
-    return Vector2:new(a.x + b.x, b.y and (a.y + b.y) or a.y)
+function Vector2.__tostring()
+    return string.format("Vector2(%f, %f)", self.x, self.y)
+end
+
+function Vector2.__add(a, b)
+    return Vector2:new(a.x + b.x, a.y + b.y)
 end
 
 function Vector2.__sub(a, b)

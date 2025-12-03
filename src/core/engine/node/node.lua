@@ -1,11 +1,12 @@
 local Node = class("Node")
 
 function Node:init(name, is_root_node, parent, children)
-    self.is_node = true
+    self._is_node = true
+    self._signals = {}
+    self._children = children or {}
 
     self.name = name or "Node"
     self.is_root_node = is_root_node or false
-    self.children = children or {}
     self.uuid = generate_uuid()
 
     if parent then
@@ -14,7 +15,7 @@ function Node:init(name, is_root_node, parent, children)
         error("Non-root nodes must have a parent node.")
     end
 
-    self._signals = {}
+    self:emit("_on_mount")
 end
 
 function Node:emit(name,...)
@@ -58,14 +59,14 @@ function Node:get_parent()
 end
 
 function Node:get_children()
-    return self.children
+    return self._children
 end
 
 function Node:add_child(child)
     if not inherits(child, Node) then
         error("Child must be a Node.")
     end
-    table.insert(self.children, child)
+    table.insert(self._children, child)
 end
 
 function Node:add_children(children)
@@ -79,20 +80,20 @@ function Node:remove_child(child)
     if not inherits(child, Node) then
         error("Child must be a node.")
     end
-    local index = find_index(self.children, child)
+    local index = find_index(self._children, child)
     if not index then
         print("Child not found in parent '" .. self.name .. "'")
         return
     end
 
-    table.remove(self.children, index)
+    table.remove(self._children, index)
     child:set_parent(nil)
 end
 
 function Node:traverse_down_tree(cb)
     if cb(self) then return self end
-    for i = 1, #self.children do
-        local child = self.children[i]
+    for i = 1, #self._children do
+        local child = self._children[i]
 
         if cb(child) then
             return child

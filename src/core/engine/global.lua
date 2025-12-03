@@ -70,3 +70,6 @@ _G.find_index = function (table, value)
     end
     return nil
 end
+_G.clamp = function (v,mi,ma)
+    return math.max(mi, math.min(ma, v))
+end

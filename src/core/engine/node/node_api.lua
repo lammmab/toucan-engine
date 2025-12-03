@@ -12,5 +12,11 @@ return {
             error("create_node: unknown node type '" .. tostring(node_type) .. "'")
         end
         return node_class:new(name, false, parent, {}, ...)
+    end,
+    get_node_by_id = function(scene, uuid)
+        local node = scene.root_node:traverse_down_tree(function(n)
+            return n.uuid == uuid
+        end)
+        return node
     end
 }

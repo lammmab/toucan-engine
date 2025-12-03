@@ -32,11 +32,12 @@ local function is_vec2_string(str)
     return str:match("^vec2%(([^,]+),([^,]+)%)$") ~= nil
 end
 
-local function decode(tbl)
+local function decode(scene,tbl)
     local expected_type = tbl["node_type"]
     local node_class = Engine.NodeTypes[expected_type:lower()]
 
-    local node = node_class:new(tbl["name"], tbl["is_root_node"], tbl["parent"], {})
+    local parent_node = Engine.get_node_by_id(scene, tbl["parent"])
+    local node = node_class:new(tbl["name"], tbl["is_root_node"], parent_node, {})
 
     for k, v in pairs(tbl) do
         if node[k] == nil then
@@ -97,8 +98,8 @@ function NodeConverter.encode_node(node)
     return encoded
 end
 
-function NodeConverter.decode_node(node_obj)
-    return decode(node_obj)
+function NodeConverter.decode_node(scene,node_obj)
+    return decode(scene,node_obj)
 end
 
 return NodeConverter

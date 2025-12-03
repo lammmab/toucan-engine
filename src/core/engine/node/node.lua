@@ -89,6 +89,24 @@ function Node:remove_child(child)
     child:set_parent(nil)
 end
 
+function Node:traverse_down_tree(cb)
+    if cb(self) then return self end
+    for i = 1, #self.children do
+        local child = self.children[i]
+
+        if cb(child) then
+            return child
+        end
+
+        local found = child:traverse_down_tree(cb)
+        if found then
+            return found
+        end
+    end
+    return nil
+end
+
+
 -- TODO: Implement script attachment
 -- 1. Load the script from the path
 -- 2. Run the script in the Node environment

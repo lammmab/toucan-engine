@@ -6,6 +6,7 @@ function Node:init(name, is_root_node, parent, children)
     self.name = name or "Node"
     self.is_root_node = is_root_node or false
     self.children = children or {}
+    self.uuid = generate_uuid()
 
     if parent then
         self:set_parent(parent)

@@ -1,4 +1,3 @@
-dofile("src/core/engine/global.lua")
 local nodes = require("node.node_api")
 local vector2 = require("math.vector2")
 local scene_manager = require("scene_manager.manager")

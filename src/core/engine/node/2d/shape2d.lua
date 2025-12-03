@@ -1,4 +1,5 @@
 local Shape2D = class("Shape2D", require("node.2d.node2d"))
+local Vector2 = require("math.vector2")
 
 local shapes = {
     ["rectangle"] = 1,
@@ -6,20 +7,20 @@ local shapes = {
 }
 
 function Shape2D:init(name, is_root_node, parent, children, position, rotation, shape, size, color)
-    if not inherits(parent, require("node.2d.node2d")) then
+    if parent and not inherits(parent, require("node.2d.node2d")) then
         error("Parent must be a Node2D.")
     end
     Shape2D.super.init(self, name, is_root_node, parent, children, position, rotation)
-    if not shapes[shape] then
+    if shape and not shapes[shape] then
         error("Invalid shape type: " .. tostring(shape))
     end
     
-    if typeof(size) ~= "vector2" then
+    if size and typeof(size) ~= "vector2" then
         error("Size must be a Vector2.")
     end
-    self.shape = shape
-    self.size = size
-    self.color = color
+    self.shape = shape or "circle"
+    self.size = size or Vector2:new(32,32)
+    self.color = color or {1,0,0}
 end
 
 function Shape2D:draw()

@@ -1,12 +1,13 @@
 local nodes = {
-    Node = require("node.node"),
-    Node2D = require("node.2d.node2d"),
-    ScriptNode = require("node.scriptnode")
+    node = require("node.node"),
+    node2d = require("node.2d.node2d"),
+    scriptnode = require("node.scriptnode")
 }
 
 return {
+    NodeTypes = nodes,
     create_node = function(node_type, name, parent, ...)
-        local node_class = nodes[node_type]
+        local node_class = nodes[node_type:lower()]
         if not node_class then
             error("create_node: unknown node type '" .. tostring(node_type) .. "'")
         end

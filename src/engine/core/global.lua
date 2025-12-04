@@ -20,13 +20,24 @@ _G.class = function(name,base)
     end
 
     setmetatable(c, {__index = base})
+
+    function c:on_property_changed(k,v) end
     function c:new(...)
         local obj = setmetatable({}, c)
+
+        local mt = getmetatable(obj)
+        mt.__newindex = function(t, k, v)
+            rawset(t, k, v)
+            if t.on_property_changed then
+                t:on_property_changed(k, v)
+            end
+        end
         if obj.init then obj:init(...) end
         return obj
     end
     return c
 end
+
 _G.typeof = function(obj)
     local t = type(obj)
     

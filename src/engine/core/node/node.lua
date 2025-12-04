@@ -17,6 +17,37 @@ function Node:init(name, is_root_node, parent, children)
     end
 
     self._signals:emit("_on_mount")
+
+    self._funcs = {}
+    self._script = nil
+    self.script_path = ""
+end
+
+function Node:run_script_hook(name,...)
+    if self._funcs[name] then
+        self._funcs[name](self,...)
+    end
+end
+
+function Node:run_script()
+    if self._script then
+        self._script()
+    end
+end
+
+function Node:set_script(path)
+    self.script_path = path
+    local chunk_str = assert(love.filesystem.read(path))
+
+    local env = setmetatable({}, { __index = function(_, k)
+        return self[k] or _G[k]
+    end })
+
+    self._script = assert(load(chunk_str, "@"..path, "t", env))
+    self._script()
+    
+    self._funcs = env
+    self:run_script_hook("_on_mount")
 end
 
 function Node:set_parent(parent)
@@ -93,14 +124,8 @@ function Node:traverse_down_tree(cb)
     return nil
 end
 
-
--- TODO: Implement script attachment
--- 1. Load the script from the path
--- 2. Run the script in the Node environment
--- 3. Store callbacks to be called during the Node lifecycle
--- 4. Run init function if exists 
-function Node:attach_script(path)
-    
+function Node:_update()
+    -- override
 end
 
 return Node

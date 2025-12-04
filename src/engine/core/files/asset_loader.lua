@@ -19,7 +19,7 @@ function Assets.get(path)
         return Assets._loaded[path]
     end
 
-    local ext = path:match('^.%(.+)$')
+    local ext = path:match("^.+%.(.+)$")
     local loader = loaders[ext]
     assert(loader, "No loader for file extension: " .. tostring(ext))
     

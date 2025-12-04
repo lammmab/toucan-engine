@@ -29,7 +29,7 @@ function Shape2D:init(name, is_root_node, parent, children, position, rotation, 
     self.color = color or Color:new(255,255,255,1)
 end
 
-function Shape2D:draw()
+function Shape2D:_draw()
     love.graphics.setColor(self.color:to_love())
     if self.shape == "rectangle" then
         love.graphics.rectangle(

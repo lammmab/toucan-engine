@@ -21,7 +21,7 @@ Engine.__index = Engine
 function Engine.new(main_scene)
     local self = setmetatable({}, Engine)
 
-    self.apis = {logging, json, nodes, vector2, color, asset_loader, input_service}
+    self.apis = {logging, json, asset_loader, input_service, nodes, vector2, color}
     self.scene_manager = scene_manager:new({main_scene})
 
     self:setup_apis()

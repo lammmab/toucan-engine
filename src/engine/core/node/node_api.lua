@@ -1,7 +1,7 @@
 local nodes = {
     node = require("node.node"),
     node2d = require("node.2d.node2d"),
-    scriptnode = require("node.scriptnode")
+    staticsprite2d = require("node.2d.staticsprite2d")
 }
 
 return {

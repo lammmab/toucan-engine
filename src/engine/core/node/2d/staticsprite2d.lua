@@ -1,15 +1,16 @@
 local StaticSprite2D = class("StaticSprite2D", require("node.2d.node2d"))
+local AssetManager = require("files.asset_loader")
 
 function StaticSprite2D:init(name, is_root_node, parent, children, position, rotation, scale, path)
     StaticSprite2D.super.init(self, name, is_root_node, parent, children, position, rotation, scale)
-    
+    print(path)
     self.path = path
-    self._asset = Engine.get_asset(path)
+    self._asset = AssetManager.get_asset(path)
     self._w = self._asset:getWidth()
     self._h = self._asset:getHeight()
 end
 
-function StaticSprite2D:draw()
+function StaticSprite2D:_draw()
     love.graphics.draw(
         self._asset, 
         self.global_position.x, 
@@ -21,3 +22,5 @@ function StaticSprite2D:draw()
         self._h / 2
     )
 end
+
+return StaticSprite2D

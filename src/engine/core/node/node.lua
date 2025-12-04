@@ -1,6 +1,6 @@
 local Node = class("Node")
 local Signals = require("lib.signals")
-local safe_env = require("lib.safe_env")
+local safe_env 
 
 local HOOKS = {
     "_on_mount",
@@ -40,7 +40,7 @@ function Node:set_script(path)
     self.script_path = path
     local chunk_str = assert(love.filesystem.read(path))
 
-    local env = safe_env()
+    local env = require("lib.safe_env")()
     env.self = self
 
     self._script = assert(load(chunk_str, "@"..path, "t", env))

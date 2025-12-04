@@ -1,4 +1,4 @@
-dofile("global.lua")
+dofile("src/engine/core/global.lua")
 
 local ToucanEngine = require("engine")
 local Node2D = require("node.2d.node2d")
@@ -21,11 +21,11 @@ function love.load()
 
     shape = Shape2D:new("MyRectangle", false, root_node, {}, vector2:new(50,50), 0, "rectangle", vector2:new(32,32))
     
-    shape:set_script("test_script.lua")
     
     local main_scene = Scene:new("Main", root_node)
     engine = ToucanEngine.new(main_scene)
     Engine.Logging.toggle_debug(true)
+    shape:set_script("test_script.lua")
 end
 
 function love.update(dt)

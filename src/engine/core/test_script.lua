@@ -1,4 +1,4 @@
-local speed = 3
+local speed = 50
 local current_dir = Engine.new_vec2(0,0)
 local function choose_random_dir()
     local angle = math.random() * 2 * math.pi
@@ -25,15 +25,22 @@ local function is_touching_edge(pos, size)
     return touching
 end
 
+local function reflect(v,n)
+    local normalized = n:normalized()
+    local dot = v:dot(normalized)
+    return v-normalized*(2*dot)
+end
+
 function _on_mount()
     current_dir = choose_random_dir()
 end
 
-function _on_update(dt)
-    self.position = self.position + Engine.new_vec2(
+function _update(dt)
+    print(current_dir)
+    self:set_position(self.position + Engine.new_vec2(
         current_dir.x * speed * dt, 
         current_dir.y * speed * dt
-    )
+    ))
     local edge = is_touching_edge(self.position,self.size)
     if edge.left then
         current_dir = reflect(current_dir, normals.left)

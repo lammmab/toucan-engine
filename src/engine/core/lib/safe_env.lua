@@ -17,12 +17,7 @@ local safe_env = {
     table = table,
 
     Engine = Engine,
-}
-
-safe_env.math   = make_readonly_recursive(math)
-safe_env.string = make_readonly_recursive(string)
-safe_env.table  = make_readonly_recursive(table)
-safe_env.Engine = make_readonly_recursive(Engine)
+}  
 
 local function freeze(tbl, seen)
     if type(tbl) ~= "table" then
@@ -53,8 +48,14 @@ local function make_readonly_recursive(tbl)
     return freeze(tbl, {})
 end
 
+safe_env.math   = make_readonly_recursive(math)
+safe_env.string = make_readonly_recursive(string)
+safe_env.table  = make_readonly_recursive(table)
+safe_env.Engine = make_readonly_recursive(Engine)
+safe_env.love = love
+
 local function get()
-    return make_readonly_recursive(safe_env)
+    return safe_env
 end
 
 return get
